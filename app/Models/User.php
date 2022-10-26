@@ -50,31 +50,6 @@ class User extends Authenticatable
         return $this->hasMany(Quiz::class);
     }
 
-    public function products()
-    {
-        return $this->hasMany(Product::class,'user_id');
-    }
-
-    public function becomeSeller()
-    {
-        return  $this->hasMany(BecomeSeller::class);
-    }
-
-    public function sliders()
-    {
-        return $this->hasMany(Slider::class);
-    }
-
-    public function order()
-    {
-        return $this->hasMany(Order::class);
-    }
-
-    public function wishList()
-    {
-        return $this->hasMany(Wishlist::class);
-    }
-
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->toDayDateTimeString();
@@ -85,19 +60,6 @@ class User extends Authenticatable
         return Carbon::parse($value)->toDayDateTimeString();
     }
 
-    public function getUserComment()
-    {
-        return $this->hasMany(Comment::class);
-    }
 
-    public function productRating()
-    {
-        return $this->hasMany(ProductRating::class);
-    }
-
-//    public function getIdAttribute($value)
-//    {
-//        return Crypt::encrypt($value);
-//    }
 
 }

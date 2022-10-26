@@ -15,7 +15,7 @@ class CreateQuizQuestionOptionsTable extends Migration
     {
         Schema::create('quiz_question_options', function (Blueprint $table) {
             $table->id();
-            $table->string('text');
+            $table->string('option_title');
             $table->foreignId('quiz_question_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

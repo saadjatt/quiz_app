@@ -29,12 +29,12 @@ class AuthController extends Controller
     public function login(Request $request): \Illuminate\Http\JsonResponse
     {
         $request->validate([
-            'username' => ['string', 'min:3'],
+            'email' => ['string', 'min:3'],
             'password' => ['string', 'min:3'],
         ]);
         try {
-            if (!Auth::attempt(['username' => $request->username, 'password' => $request->password, 'is_admin' => 0, "active" => 1])){
-                if (!Auth::attempt(['email' => $request->username, 'password' => $request->password, 'is_admin' => 0, "active" => 1]))
+            if (!Auth::attempt(['email' => $request->email, 'password' => $request->password, "active" => 1])){
+                if (!Auth::attempt(['email' => $request->email, 'password' => $request->password, "active" => 1]))
                     return response()->json('Invalid login details', 500);
             }
             $token = $request->user()->createToken('auth_token')->plainTextToken;
@@ -54,53 +54,23 @@ class AuthController extends Controller
 
     public function signUp(Request $request): \Illuminate\Http\JsonResponse
     {
-        $request->validate([
-            'name' => ['string', 'min:3', 'required'],
-            // 'username' => ['string', 'min:3', 'required'],
-            // 'email' => ['email', 'required']
-           'username' => ['string', 'min:3', 'required', 'unique:users,username'],
-           'email' => ['email', 'required', 'unique:users,email'],
-           'password' => ['string', 'min:4', 'required']
-        ], 
-        ["username.unique" => "Sorry, this username has already been taken!",
-        "email.unique" => "Sorry, this email has already been taken!"]);
 
         try{
-            //$passwordGenerate = $this->OTPGenerator(8);
-            // $user = User::query()->where("email", $request->email)->where("username", $request->username)->whereNull("email_verified_at")->first();
-            // if(!empty($user)) {
-                // $user->password = Hash::make($passwordGenerate);
-                // $user->save();
-                // $this->sendPasswordToMail($request->email, $request->username, $passwordGenerate);
-                // return response()->json("Password has been send to {$request->email}");
-            // }
-            // $user = User::query()->where("email", $request->email)->where("username", $request->username)->whereNotNull("email_verified_at")->first();
-            // if(!empty($user))
-                // return response()->json("Email & Username have already been taken", 500);
-            // else
-            // {
-                // return $request->validated();
-                // $request->validate([
-                //     'username' => ['string', 'min:3', 'required', 'unique:users,username'],
-                //     'email' => ['email', 'required', 'unique:users,email']
-                // ],
-                // [
-                //     'username.unique' => 'Sorry, this username has already been taken!',
-                // ]
-                // );
-                
+            $request->validate([
+                'name' => ['string', 'min:3', 'required'],
+                'email' => ['email', 'required', 'unique:users,email'],
+                'password' => ['string', 'min:4', 'required'],
+            ], 
+            ["email.unique" => "Sorry, this email has already been taken!"]);
+
                 $user = new User();
                 $user->name = $request->name;
-                $user->username = $request->username;
                 $user->email = $request->email;
                 $user->password = Hash::make($request->password);
                 $user->save();
                 //$this->sendPasswordToMail($request->email, $request->username, $passwordGenerate);
-                return response()->json("Password has been send to {$request->email}");
-            // }
-//            if (Auth::attempt($request->only('username', 'password'))) {
-//                $token = $request->user()->createToken('auth_token')->plainTextToken;
-//            } else return response()->json('user not created', 500);
+                return response()->json(["status"=>1, "message"=>"You have successfully signed up...!!"]);
+
         } catch (\Exception $exception){
             return response()->json($exception->getMessage(), 500);
         }

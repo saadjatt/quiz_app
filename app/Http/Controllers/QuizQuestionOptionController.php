@@ -39,7 +39,7 @@ class QuizQuestionOptionController extends Controller
     {
         $request->validate([
             'quiz_question_id' => ['required', 'exists:quiz_questions,id', 'numeric'],
-            'text' => ['required','string'],
+            'option_title' => ['required','string'],
         ]);
         try {
             // return $request->user();

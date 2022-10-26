@@ -52,9 +52,7 @@ class QuizController extends Controller
             $quiz->user()->associate($request->user());
             $quiz->save();
             
-            $users = User::query()->where("active", "=",1)->get();
-
-            
+            $users = User::query()->where("active",1)->get();
             foreach ($users as $user) {
                 $notify_email = new  NotificationEmail();
                 $notify_email->user_id=$user->id;
@@ -62,9 +60,6 @@ class QuizController extends Controller
                 $notify_email->is_sent=0;
                 $notify_email->save();
             }
-
-
-
             return response()->json($quiz);
         } catch (Exception $exception) {
             return response()->json($exception->getMessage(), 500);

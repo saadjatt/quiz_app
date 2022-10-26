@@ -11,14 +11,18 @@ class Notify extends Mailable
 {
     use Queueable, SerializesModels;
 
+    
+    public $title = "", $name = '';
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($name, $title)
     {
-        //
+        $this->name = $name;
+        $this->title = $title;
+        
     }
 
     /**
@@ -28,6 +32,6 @@ class Notify extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->view('email.notificationQuiz')->with(["title" => $this->title, "name" => $this->name]);
     }
 }

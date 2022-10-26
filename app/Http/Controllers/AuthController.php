@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Traits\ApiResponse;
 use App\Mail\SendPasswordMail;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;

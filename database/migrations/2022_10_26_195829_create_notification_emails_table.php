@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQuizQuestionsTable extends Migration
+class CreateNotificationEmailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateQuizQuestionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('quiz_questions', function (Blueprint $table) {
+        Schema::create('notification_emails', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
-            $table->string('title');
-            $table->string('answer');
             $table->foreignId('quiz_id')->constrained("quizzes")->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained("users")->cascadeOnDelete();
+            $table->integer('is_sent');
+            
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateQuizQuestionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('quiz_questions');
+        Schema::dropIfExists('notification_emails');
     }
 }

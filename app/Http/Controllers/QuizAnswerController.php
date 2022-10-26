@@ -49,8 +49,6 @@ class QuizAnswerController extends Controller
             $quizAnswer->quizQuestion()->associate(QuizQuestion::query()->find($request->quiz_question_id));
             $quizAnswer->user()->associate($request->user());
             $quizAnswer->save();
-            
-
             return response()->json($quizAnswer);
         } catch (Exception $exception) {
             return response()->json($exception->getMessage(), 500);

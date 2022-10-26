@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\NotificationEmail;
 use App\Models\Quiz;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\DB;
 
 class QuizController extends Controller
@@ -49,6 +52,19 @@ class QuizController extends Controller
             $quiz->user()->associate($request->user());
             $quiz->save();
             
+            $users = User::query()->where("active", "=",1)->get();
+
+            
+            foreach ($users as $user) {
+                $notify_email = new  NotificationEmail();
+                $notify_email->user_id=$user->id;
+                $notify_email->quiz_id=$quiz->id;
+                $notify_email->is_sent=0;
+                $notify_email->save();
+            }
+
+
+
             return response()->json($quiz);
         } catch (Exception $exception) {
             return response()->json($exception->getMessage(), 500);
@@ -64,7 +80,6 @@ class QuizController extends Controller
     public function show(Quiz $quiz)
     {
         return $quiz->with(['quizQuestion', 'quizQuestion.quizQuestionOption'])->get();
-        // ->with(['quizQuestion', 'quizQuestion.quizQuestionOption'])
     }
 
     /**

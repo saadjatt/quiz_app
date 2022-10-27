@@ -65,6 +65,8 @@ class QuizQuestionController extends Controller
     public function show(QuizQuestion $quizQuestion)
     {
         //
+        return $quizQuestion->get();
+
     }
 
     /**

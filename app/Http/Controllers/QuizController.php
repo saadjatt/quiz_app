@@ -137,4 +137,26 @@ class QuizController extends Controller
         
     }
 
+
+    public function getHistory(Request $request)
+    {    
+        try{
+        
+            
+            return response()->json(DB::select('Select u.name, u.email,q.title as "Quiz Title",
+            (Select qaa.created_at  from quiz_answers qaa where qa.user_id=u.id limit 1) as "Created At"
+            from quizzes q 
+            join quiz_questions qq ON q.id =qq.quiz_id 
+            join quiz_answers qa on qa.quiz_question_id =qq.id 
+            join users u on qa.user_id  =u.id 
+            group by qa.user_id, qq.quiz_id 
+            '));
+        }
+        catch (Exception $exception) {
+            return response()->json($exception->getMessage(), 500);
+        }
+
+        
+    }
+
 }

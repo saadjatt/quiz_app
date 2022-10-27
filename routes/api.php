@@ -54,6 +54,7 @@ Route::resource('/quiz-answer', QuizAnswerController::class)->only(['index', 'sh
 
 Route::middleware('auth:sanctum')->prefix('auth')->group(function () {
 
+    Route::post('/get-history',[QuizController::class, 'getHistory']);
     Route::post('/result',[QuizController::class, 'getResult']);
     Route::resource('/quiz', QuizController::class)->except(['index', 'show']);
     Route::resource('/quiz-question', QuizQuestionController::class)->except(['index', 'show']);
